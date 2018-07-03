@@ -1,6 +1,7 @@
 package hanco.itsp.android.hanco1;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
@@ -129,6 +130,20 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intentrpi);
             }
         });
+
+        speakButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+
+                try{
+                    startActivityForResult(intent, SPEECH_REQUEST_CODE);
+                }   catch(ActivityNotFoundException a){
+                    Toast.makeText(getApplicationContext(), "Speech not Working", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
     // This callback is invoked when the Speech Recognizer returns.
 // This is where you process the intent and extract the speech text from the intent.
@@ -144,27 +159,28 @@ public class HomeActivity extends AppCompatActivity {
         // Do something with spokenText
 
         Toast.makeText(HomeActivity.this,"Hello World",Toast.LENGTH_LONG);
-        if(spokenText=="logo"){
+        if(spokenText.equals("logo")){
 
             intentlogo=new Intent(HomeActivity.this,LogoActivity.class);
             startActivity(intentlogo);
         }
-        else if(spokenText=="ocr"){
-            Toast.makeText(HomeActivity.this,spokenText,Toast.LENGTH_LONG);
+        else if(spokenText.equals("read")){
+            Toast.makeText(HomeActivity.this,spokenText,Toast.LENGTH_LONG).show();
             intentocr=new Intent(HomeActivity.this,OCRActivity.class);
             startActivity(intentocr);
         }
-        else if(spokenText=="raspberry"){
-            Toast.makeText(HomeActivity.this,spokenText,Toast.LENGTH_LONG);
+        else if(spokenText.equals("raspberry")){
+            Toast.makeText(HomeActivity.this,spokenText,Toast.LENGTH_LONG).show();
             intentrpi=new Intent(HomeActivity.this,stream.class);
             startActivity(intentrpi);
         }
-        else if(spokenText=="camera"){
+        else if(spokenText.equals("camera")){
             intentcam=new Intent(HomeActivity.this,CameraActivity.class);
             startActivity(intentcam);
         }
         else{
-            Toast.makeText(HomeActivity.this,"Not recognized",Toast.LENGTH_LONG);
+            Toast.makeText(HomeActivity.this,"Not recognized",Toast.LENGTH_LONG).show();
+
         }
         speechText.setText(spokenText);
 

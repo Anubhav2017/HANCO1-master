@@ -67,7 +67,7 @@ public class LogoActivity extends AppCompatActivity {
         String message;
         buttonClick(String s){
             message=s;
-            MyClientTask myClientTaskImage = new MyClientTask(IPAddress, Integer.parseInt(Port),"img");
+            ImageClientTask myClientTaskImage = new ImageClientTask(IPAddress, Integer.parseInt(Port),"img");
             myClientTaskImage.execute();
             MyClientTask myClientTaskCat = new MyClientTask(IPAddress, Integer.parseInt(Port),message);
             myClientTaskCat.execute();

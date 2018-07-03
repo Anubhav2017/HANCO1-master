@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.util.Base64;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ public class ImageClientTask extends AsyncTask<Void, Void, Void> {
     ImageView imageView;
     Bitmap bm;
     String response;
+    String result;
     TextView responseView;
 
     ImageClientTask(String addr, int port, String msgTo) {
@@ -42,6 +44,7 @@ public class ImageClientTask extends AsyncTask<Void, Void, Void> {
         responseView=LogoActivity.textResponse;
         responseView.setText("Hello World");
         imageView=LogoActivity.imageView;
+
 
 
     }
@@ -60,22 +63,14 @@ public class ImageClientTask extends AsyncTask<Void, Void, Void> {
         try {
             socket = new Socket(dstAddress, dstPort);
             responseView.setText("dos created");
+            dis=new DataInputStream(socket.getInputStream());
+            byte[] base64=dis.readUTF().getBytes();
 
-            dis= new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-
-            responseView.setText("dis created");
-            int size=409600;
-            byte[] imageAr = new byte[size];
-            dis.read(imageAr);
-
-            responseView.setText(new String(imageAr, "UTF-8"));
-            bm = Bitmap.createBitmap(640, 640, Bitmap.Config.ARGB_8888);
-            ByteBuffer buffer = ByteBuffer.wrap(imageAr);
-            bm.copyPixelsFromBuffer(buffer);
-
-            if(bm!=null)
-                responseView.setText("bitmap created");
-
+            byte[] arr=Base64.decode(base64,0, base64.length, Base64.NO_WRAP);
+            responseView.setText(result);
+            /*byte[] byteArray;
+            byteArray= Base64.decode(b64,Base64.DEFAULT);
+            bm=BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);*/
 
         } catch (UnknownHostException e) {
             // TODO Auto-generated catch block
@@ -110,23 +105,22 @@ public class ImageClientTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        responseView.setText("In post Execute");
         imageView.setImageBitmap(bm);
+
         String root=Environment.getExternalStorageDirectory().getAbsolutePath();
         File myDir=new File(root+"/ITSP");
         myDir.mkdir();
-        String fname="LoL.jpg";
-        File file=new File(myDir,fname);
-        if(file.exists())file.delete();
+        String fname="xD.jpg";
+        File file=new File(myDir, fname);
+        if(file.exists())
+            file.delete();
+
         try{
             FileOutputStream fos=new FileOutputStream(file);
-            bm.compress(Bitmap.CompressFormat.JPEG,90,fos);
-            fos.flush();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            fos.write(Base64.decode(response, Base64.NO_WRAP));
         } catch (IOException e) {
             e.printStackTrace();
+
         }
         super.onPostExecute(result);
     }

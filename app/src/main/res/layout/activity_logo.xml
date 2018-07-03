@@ -10,7 +10,8 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:id="@+id/logoview"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:visibility="visible"/>
 
     <Button
         android:layout_width="wrap_content"
