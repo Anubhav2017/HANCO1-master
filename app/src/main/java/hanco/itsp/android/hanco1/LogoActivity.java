@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import static hanco.itsp.android.hanco1.HomeActivity.IPAddress;
 import static hanco.itsp.android.hanco1.HomeActivity.Port;
 
@@ -67,12 +68,15 @@ public class LogoActivity extends AppCompatActivity {
         String message;
         buttonClick(String s){
             message=s;
-            ImageClientTask myClientTaskImage = new ImageClientTask(IPAddress, Integer.parseInt(Port),"img");
-            myClientTaskImage.execute();
-            MyClientTask myClientTaskCat = new MyClientTask(IPAddress, Integer.parseInt(Port),message);
-            myClientTaskCat.execute();
+            MyClientTask imageTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"img");
+            imageTask.execute();
+            new DjangoUnchained (getApplicationContext()).execute("http://192.168.2.11:80909/static/images/input.jpg");
+            MyClientTask myClientTask=new MyClientTask(IPAddress,Integer.parseInt(Port),message);
+            myClientTask.execute();
 
-            }
+        }
+
+
     }
 
 }
