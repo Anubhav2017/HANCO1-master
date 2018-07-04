@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import java.util.concurrent.ExecutionException;
+
 import static hanco.itsp.android.hanco1.HomeActivity.IPAddress;
 import static hanco.itsp.android.hanco1.HomeActivity.Port;
 
@@ -26,6 +28,7 @@ public class LogoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logo);
+        response="random";
 
         animalButton=findViewById(R.id.animalButton);
         flowerButton=findViewById(R.id.flowerbutton);
@@ -62,7 +65,6 @@ public class LogoActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
 
@@ -73,10 +75,26 @@ public class LogoActivity extends AppCompatActivity {
             message=s;
             MyClientTask imageTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"img");
             imageTask.execute();
+            try {
+                imageTask.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
             if(response.equalsIgnoreCase("Image Uploaded")){
-                new DjangoUnchained (getApplicationContext()).execute("http://192.168.2.11:80909/static/images/input.jpg");
+                DjangoUnchained abc=new DjangoUnchained (getApplicationContext());
+                abc.execute("http://192.168.2.11:80909/static/images/input.jpg");
+                try {
+                    abc.get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
                 MyClientTask myClientTask=new MyClientTask(IPAddress,Integer.parseInt(Port),message);
                 myClientTask.execute();
+
 
             }
             else{

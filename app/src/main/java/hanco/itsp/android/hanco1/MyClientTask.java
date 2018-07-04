@@ -97,7 +97,7 @@ public class MyClientTask extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected void onPostExecute(Void result) {
+    public void onPostExecute(Void result) {
         textResponse.setText(response);
 
         super.onPostExecute(result);
