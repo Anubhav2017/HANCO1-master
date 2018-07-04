@@ -71,7 +71,7 @@ public class LogoActivity extends AppCompatActivity {
         sendImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyClientTask imageTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"img");
+                MyClientTask imageTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"imgLogo");
                 imageTask.execute();
                 textResponse.setText("Image request sent");
             }
@@ -79,7 +79,7 @@ public class LogoActivity extends AppCompatActivity {
         downloadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DjangoUnchained abc=new DjangoUnchained (getApplicationContext());
+                DjangoUnchained abc=new DjangoUnchained (getApplicationContext(),"Logo");
                 abc.execute("http://192.168.2.11:8090/static/images/input.jpg");
                 }
         });

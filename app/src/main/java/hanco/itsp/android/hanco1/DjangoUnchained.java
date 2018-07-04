@@ -32,6 +32,7 @@ public class DjangoUnchained extends AsyncTask<String, Integer, String> {
     ProgressBar progressBar;
     ImageView imageView;
      String s;
+     String owner;
     TextView textresponse;
     TextView textView;
     ImageView ocrView;
@@ -39,9 +40,14 @@ public class DjangoUnchained extends AsyncTask<String, Integer, String> {
 
 
 
-    public DjangoUnchained(Context context) {
+    public DjangoUnchained(Context context,String string) {
+
         this.context = context;
+        owner=string;
+
     }
+
+
 
     @Override
     protected void onPreExecute() {
@@ -119,13 +125,21 @@ public class DjangoUnchained extends AsyncTask<String, Integer, String> {
 
     protected void onPostExecute(String result) {
         mWakeLock.release();
-        textresponse.setText("Image downloaded");
         File imgfile= new File(Environment.getExternalStorageDirectory() + "/Tess/image/ocr.jpg");
+
         Uri imguri= Uri.fromFile(imgfile);
-        imageView.setImageURI(imguri);
-        textView.setText("Image Download");
-        ocrView.setImageURI(imguri);
-        ocrView.setVisibility(View.VISIBLE);
+
+        if (owner.equals("OCR")) {
+            textView.setText("Image Download");
+            ocrView.setImageURI(imguri);
+            ocrView.setVisibility(View.VISIBLE);
+        }
+        else if(owner.equals("Logo")){
+            textresponse.setText("Image downloaded");
+            imageView.setImageURI(imguri);
+        }
+
+
 
 
 

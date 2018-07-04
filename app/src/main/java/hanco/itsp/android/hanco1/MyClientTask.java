@@ -100,8 +100,15 @@ public class MyClientTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     public void onPostExecute(Void result) {
-        textResponse.setText(response);
-        textView.setText(response);
+        if(msgToServer.equals("imgLogo")){
+            textResponse.setText(response);
+        }
+        if(msgToServer.equals("imgOCR")){
+            textView.setText(response);
+        }
+        else{
+            textResponse.setText(response);
+        }
 
         super.onPostExecute(result);
     }

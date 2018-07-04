@@ -1,11 +1,13 @@
 package hanco.itsp.android.hanco1;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.EntityIterator;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +22,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Locale;
+
 import static hanco.itsp.android.hanco1.HomeActivity.IPAddress;
 import static hanco.itsp.android.hanco1.HomeActivity.Port;
 import static hanco.itsp.android.hanco1.LogoActivity.response;
@@ -33,8 +37,11 @@ public class OCRActivity extends AppCompatActivity {
     Button ocrDownloadButton;
     Button ocrButton;
     Button cropButton;
+    Button buttonSpeak;
     Uri outputFileDir;
+    private TextToSpeech mTTS;
 
+    public String result;
 
     public static TextView textView;
     private TessBaseAPI tessBaseAPI;
@@ -51,6 +58,7 @@ public class OCRActivity extends AppCompatActivity {
         ocrDownloadButton=findViewById(R.id.ocrdownload);
         ocrButton=findViewById(R.id.startOCR);
         cropButton=findViewById(R.id.cropButton);
+        buttonSpeak = findViewById(R.id.TTS);
         cropButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,14 +69,14 @@ public class OCRActivity extends AppCompatActivity {
         ocrUploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyClientTask ocrTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"img");
+                MyClientTask ocrTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"imgOCR");
                 ocrTask.execute();
             }
         });
         ocrDownloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DjangoUnchained abc=new DjangoUnchained (getApplicationContext());
+                DjangoUnchained abc=new DjangoUnchained (getApplicationContext(),"OCR");
                 abc.execute("http://192.168.2.11:8090/static/images/input.jpg");
             }
         });
@@ -83,9 +91,40 @@ public class OCRActivity extends AppCompatActivity {
 
             }
         });
-              
 
+        mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
 
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = mTTS.setLanguage(new Locale("en", "IN"));
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA
+                            || result == TextToSpeech.LANG_NOT_SUPPORTED)
+                    {Log.e("TTS", "Unsupported Language ;(");
+                } else {
+                    buttonSpeak.setEnabled(true);
+                }
+            } else {
+                    Log.e("TTS", "Initialization failed :'(");
+                }
+            }
+        });
+
+        buttonSpeak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                speak();
+            }
+        });
+
+    }
+
+    private void speak() {
+        if(!result.isEmpty())
+            textView.setText("OCR Empty :'(");
+        else
+            mTTS.speak(result, TextToSpeech.QUEUE_FLUSH, null, "utteranceID: 1");
     }
 
     private void prepareTessData() {
@@ -139,7 +178,7 @@ public class OCRActivity extends AppCompatActivity {
 
             Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath());
 
-            String result = this.getText(bitmap);
+            result = this.getText(bitmap);
 
             String path=Environment.getExternalStorageDirectory().toString() + "/Tess";
             File file=new File(path, "result.txt");
@@ -150,6 +189,7 @@ public class OCRActivity extends AppCompatActivity {
             } finally {
                 stream.close();
             }
+
             textView.setText(result);
 
         }catch (Exception e){
@@ -188,5 +228,14 @@ public class OCRActivity extends AppCompatActivity {
 
         tessBaseAPI.end();
         return retStr;
+    }
+
+    protected void onDestroy() {
+        if (mTTS != null) {
+            mTTS.stop();
+            mTTS.shutdown();
+        }
+
+        super.onDestroy();
     }
 }
