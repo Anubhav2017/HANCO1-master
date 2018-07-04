@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".OCRActivity">
 
-    <TextureView
-        android:id="@+id/textureView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <ImageView
+        android:id="@+id/ocrImageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         tools:layout_editor_absoluteX="-10dp"
         tools:layout_editor_absoluteY="-25dp" />
 
@@ -17,5 +17,34 @@
         android:id="@+id/ocrText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="TextView" />
-</FrameLayout>
+        android:text="TextView"
+        android:layout_below="@id/ocrImageView"
+        android:visibility="visible"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cropButton"
+        android:text="Crop Image"
+        android:layout_toRightOf="@id/ocrImageView"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ocrupload"
+        android:text="UPLOAD"
+        android:layout_toRightOf="@id/ocrImageView"
+        android:layout_below="@id/cropButton"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Download"
+        android:id="@+id/ocrdownload"
+        android:layout_toRightOf="@id/ocrImageView"
+        android:layout_below="@id/ocrupload"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/startOCR"
+        android:text="START OCR"
+        android:layout_toRightOf="@id/ocrImageView"
+        android:layout_below="@id/ocrdownload"/>
+</RelativeLayout>

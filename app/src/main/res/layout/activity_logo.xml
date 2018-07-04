@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:text="Animals"
         android:id="@+id/animalButton"
-        android:layout_below="@+id/logoview"/>
+        android:layout_below="@id/downloadImage"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,12 +37,26 @@
         android:id="@+id/logo_logo"
         android:text="Logo"
         android:layout_below="@id/genderbutton"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/clickImage"
+        android:text="Click Image"
+        android:layout_below="@id/logoview"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/downloadImage"
+        android:text="Download Image"
+        android:layout_below="@+id/clickImage"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_toRightOf="@+id/animalButton"
         android:layout_below="@id/logoview"
         android:id="@+id/logoresponsetext"/>
+
 
 
 

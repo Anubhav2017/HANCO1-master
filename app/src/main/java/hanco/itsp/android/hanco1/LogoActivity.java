@@ -19,6 +19,8 @@ public class LogoActivity extends AppCompatActivity {
     Button flowerButton;
     Button genderButton;
     Button logoButton;
+    Button downloadImage;
+    Button sendImage;
     public static ImageView imageView;
     public static TextView textResponse;
     public static String response;
@@ -29,11 +31,13 @@ public class LogoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logo);
         response="random";
+        sendImage=findViewById(R.id.clickImage);
 
         animalButton=findViewById(R.id.animalButton);
         flowerButton=findViewById(R.id.flowerbutton);
         genderButton=findViewById(R.id.genderbutton);
         imageView=findViewById(R.id.logoview);
+        downloadImage=findViewById(R.id.downloadImage);
 
         logoButton=findViewById(R.id.logo_logo);
         textResponse=findViewById(R.id.logoresponsetext);
@@ -64,6 +68,21 @@ public class LogoActivity extends AppCompatActivity {
 
             }
         });
+        sendImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyClientTask imageTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"img");
+                imageTask.execute();
+                textResponse.setText("Image request sent");
+            }
+        });
+        downloadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DjangoUnchained abc=new DjangoUnchained (getApplicationContext());
+                abc.execute("http://192.168.2.11:8090/static/images/input.jpg");
+                }
+        });
 
     }
 
@@ -73,37 +92,11 @@ public class LogoActivity extends AppCompatActivity {
         String message;
         buttonClick(String s){
             message=s;
-            MyClientTask imageTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"img");
-            imageTask.execute();
-            try {
-                imageTask.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-            if(response.equalsIgnoreCase("Image Uploaded")){
-                DjangoUnchained abc=new DjangoUnchained (getApplicationContext());
-                abc.execute("http://192.168.2.11:80909/static/images/input.jpg");
-                try {
-                    abc.get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
+
                 MyClientTask myClientTask=new MyClientTask(IPAddress,Integer.parseInt(Port),message);
                 myClientTask.execute();
 
-
             }
-            else{
-                MyClientTask myClientTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"Image Uploaded message not received");
-                myClientTask.execute();
-
-            }
-        }
-
 
     }
 

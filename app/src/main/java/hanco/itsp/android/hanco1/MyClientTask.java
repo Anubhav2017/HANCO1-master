@@ -18,6 +18,8 @@ public class MyClientTask extends AsyncTask<Void, Void, Void> {
     String response = LogoActivity.response;
     String msgToServer;
     TextView textResponse;
+    TextView textocr;
+    TextView textView=OCRActivity.textView;
 
 
     MyClientTask(String addr, int port, String msgTo) {
@@ -99,6 +101,7 @@ public class MyClientTask extends AsyncTask<Void, Void, Void> {
     @Override
     public void onPostExecute(Void result) {
         textResponse.setText(response);
+        textView.setText(response);
 
         super.onPostExecute(result);
     }

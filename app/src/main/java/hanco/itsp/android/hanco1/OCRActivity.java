@@ -9,6 +9,9 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
@@ -26,31 +29,61 @@ public class OCRActivity extends AppCompatActivity {
     private static final String TAG=OCRActivity.class.getSimpleName();
     public static final String TESS_DATA = "/tessdata";
     String response;
+    Button ocrUploadButton;
+    Button ocrDownloadButton;
+    Button ocrButton;
+    Button cropButton;
+    Uri outputFileDir;
 
-    private TextView textView;
+
+    public static TextView textView;
     private TessBaseAPI tessBaseAPI;
+    public static ImageView imageView;
     private static final String DATA_PATH = Environment.getExternalStorageDirectory() + "/Tess";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ocr);
-        Uri outputFileDir;
+        imageView=findViewById(R.id.ocrImageView);
+        textView=findViewById(R.id.ocrText);
         response=LogoActivity.response;
+        ocrUploadButton=findViewById(R.id.ocrupload);
+        ocrDownloadButton=findViewById(R.id.ocrdownload);
+        ocrButton=findViewById(R.id.startOCR);
+        cropButton=findViewById(R.id.cropButton);
+        cropButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyClientTask ocrTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"OCR");
+                ocrTask.execute();
+            }
+        });
+        ocrUploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyClientTask ocrTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"img");
+                ocrTask.execute();
+            }
+        });
+        ocrDownloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DjangoUnchained abc=new DjangoUnchained (getApplicationContext());
+                abc.execute("http://192.168.2.11:8090/static/images/input.jpg");
+            }
+        });
+        ocrButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prepareTessData();
+                String imageFilePath = DATA_PATH + "/image/" + "ocr.jpg";
+                outputFileDir = Uri.fromFile(new File(imageFilePath));
+                startOCR(outputFileDir);
 
-        MyClientTask ocrTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"OCR");
-        ocrTask.execute();
-        if(response.equals("image processed"));
-        else{
-            response.equals("image processed message not received");
-        }
 
-        textView = findViewById(R.id.ocrText);
-        textView.setText("LolxD");
-        prepareTessData();
-
-        String imageFilePath = DATA_PATH + "/image/" + "ocr.jpg";
-        outputFileDir = Uri.fromFile(new File(imageFilePath));
-        startOCR(outputFileDir);
+            }
+        });
+              
 
 
     }

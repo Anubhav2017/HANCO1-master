@@ -60,7 +60,6 @@ public class HomeActivity extends AppCompatActivity {
         Button ocrbutton=findViewById(R.id.home_ocr);
         Button logobutton=findViewById(R.id.home_logo);
         Button camerabutton=findViewById(R.id.home_camera);
-        Button rpiButton=findViewById(R.id.rpiButton);
         speechText=findViewById(R.id.speechtext);
         Button speakButton=findViewById(R.id.speakButton);
         connect=findViewById(R.id.connectbutton);
@@ -123,13 +122,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intentcam);
             }
         });
-        rpiButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intentrpi=new Intent(HomeActivity.this,stream.class);
-                startActivity(intentrpi);
-            }
-        });
+
 
         speakButton.setOnClickListener(new View.OnClickListener() {
 
@@ -169,11 +162,7 @@ public class HomeActivity extends AppCompatActivity {
             intentocr=new Intent(HomeActivity.this,OCRActivity.class);
             startActivity(intentocr);
         }
-        else if(spokenText.equals("raspberry")){
-            Toast.makeText(HomeActivity.this,spokenText,Toast.LENGTH_LONG).show();
-            intentrpi=new Intent(HomeActivity.this,stream.class);
-            startActivity(intentrpi);
-        }
+
         else if(spokenText.equals("camera")){
             intentcam=new Intent(HomeActivity.this,CameraActivity.class);
             startActivity(intentcam);

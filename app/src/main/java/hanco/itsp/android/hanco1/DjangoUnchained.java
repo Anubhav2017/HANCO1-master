@@ -1,12 +1,18 @@
 package hanco.itsp.android.hanco1;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.PowerManager;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -15,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
 
@@ -24,7 +31,10 @@ public class DjangoUnchained extends AsyncTask<String, Integer, String> {
     private PowerManager.WakeLock mWakeLock;
     ProgressBar progressBar;
     ImageView imageView;
-    String s;
+     String s;
+    TextView textresponse;
+    TextView textView;
+    ImageView ocrView;
 
 
 
@@ -42,7 +52,12 @@ public class DjangoUnchained extends AsyncTask<String, Integer, String> {
         mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 getClass().getName());
         mWakeLock.acquire();
+        textresponse=LogoActivity.textResponse;
         imageView=LogoActivity.imageView;
+        textView=OCRActivity.textView;
+        ocrView=OCRActivity.imageView;
+
+
     }
 
     @Override
@@ -104,7 +119,17 @@ public class DjangoUnchained extends AsyncTask<String, Integer, String> {
 
     protected void onPostExecute(String result) {
         mWakeLock.release();
-        imageView.setImageURI(Uri.fromFile(new File(s)));
+        textresponse.setText("Image downloaded");
+        File imgfile= new File(Environment.getExternalStorageDirectory() + "/Tess/image/ocr.jpg");
+        Uri imguri= Uri.fromFile(imgfile);
+        imageView.setImageURI(imguri);
+        textView.setText("Image Download");
+        ocrView.setImageURI(imguri);
+        ocrView.setVisibility(View.VISIBLE);
+
+
+
+
     }
 
 

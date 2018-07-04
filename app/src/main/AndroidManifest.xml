@@ -35,7 +35,6 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".stream"></activity>
     </application>
 
 </manifest>
