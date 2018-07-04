@@ -15,7 +15,7 @@ public class MyClientTask extends AsyncTask<Void, Void, Void> {
 
     String dstAddress;
     int dstPort;
-    String response = "";
+    String response = LogoActivity.response;
     String msgToServer;
     TextView textResponse;
 

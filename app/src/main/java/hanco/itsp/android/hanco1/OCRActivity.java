@@ -17,11 +17,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import static hanco.itsp.android.hanco1.HomeActivity.IPAddress;
+import static hanco.itsp.android.hanco1.HomeActivity.Port;
+import static hanco.itsp.android.hanco1.LogoActivity.response;
 
 public class OCRActivity extends AppCompatActivity {
 
     private static final String TAG=OCRActivity.class.getSimpleName();
     public static final String TESS_DATA = "/tessdata";
+    String response;
 
     private TextView textView;
     private TessBaseAPI tessBaseAPI;
@@ -31,6 +35,14 @@ public class OCRActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ocr);
         Uri outputFileDir;
+        response=LogoActivity.response;
+
+        MyClientTask ocrTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"OCR");
+        ocrTask.execute();
+        if(response.equals("image processed"));
+        else{
+            response.equals("image processed message not received");
+        }
 
         textView = findViewById(R.id.ocrText);
         textView.setText("LolxD");

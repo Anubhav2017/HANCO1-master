@@ -19,12 +19,14 @@ public class LogoActivity extends AppCompatActivity {
     Button logoButton;
     public static ImageView imageView;
     public static TextView textResponse;
+    public static String response;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logo);
+
         animalButton=findViewById(R.id.animalButton);
         flowerButton=findViewById(R.id.flowerbutton);
         genderButton=findViewById(R.id.genderbutton);
@@ -32,6 +34,7 @@ public class LogoActivity extends AppCompatActivity {
 
         logoButton=findViewById(R.id.logo_logo);
         textResponse=findViewById(R.id.logoresponsetext);
+        textResponse.setText("");
         animalButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,10 +73,17 @@ public class LogoActivity extends AppCompatActivity {
             message=s;
             MyClientTask imageTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"img");
             imageTask.execute();
-            new DjangoUnchained (getApplicationContext()).execute("http://192.168.2.11:80909/static/images/input.jpg");
-            MyClientTask myClientTask=new MyClientTask(IPAddress,Integer.parseInt(Port),message);
-            myClientTask.execute();
+            if(response.equalsIgnoreCase("Image Uploaded")){
+                new DjangoUnchained (getApplicationContext()).execute("http://192.168.2.11:80909/static/images/input.jpg");
+                MyClientTask myClientTask=new MyClientTask(IPAddress,Integer.parseInt(Port),message);
+                myClientTask.execute();
 
+            }
+            else{
+                MyClientTask myClientTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"Image Uploaded message not received");
+                myClientTask.execute();
+
+            }
         }
 
 
