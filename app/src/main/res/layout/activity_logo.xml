@@ -51,11 +51,14 @@
         android:layout_below="@+id/clickImage"/>
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/logoresponsetext"
+        android:layout_width="272dp"
         android:layout_height="50dp"
-        android:layout_toRightOf="@+id/animalButton"
         android:layout_below="@id/logoview"
-        android:id="@+id/logoresponsetext"/>
+        android:layout_marginLeft="24dp"
+        android:layout_toRightOf="@+id/animalButton"
+        android:inputType="textMultiLine"
+        android:scrollHorizontally="false" />
 
 
 
