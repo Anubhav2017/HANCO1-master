@@ -131,12 +131,15 @@ public class DjangoUnchained extends AsyncTask<String, Integer, String> {
 
         if (owner.equals("OCR")) {
             textView.setText("Image Download");
+            ocrView.setImageURI(null);
             ocrView.setImageURI(imguri);
             ocrView.setVisibility(View.VISIBLE);
         }
         else if(owner.equals("Logo")){
             textresponse.setText("Image downloaded");
+            imageView.setImageURI(null);
             imageView.setImageURI(imguri);
+            imageView.setVisibility(View.VISIBLE);
         }
 
 
