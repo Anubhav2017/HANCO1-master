@@ -35,9 +35,17 @@ public class MyClientTask extends AsyncTask<Void, Void, Void> {
         Socket socket = null;
         DataOutputStream dataOutputStream = null;
         DataInputStream dataInputStream = null;
+        try{
+            socket = new Socket(dstAddress, dstPort);
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            response="No device detected";
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         try {
-            socket = new Socket(dstAddress, dstPort);
             dataOutputStream = new DataOutputStream(
                     socket.getOutputStream());
             dataInputStream = new DataInputStream(socket.getInputStream());

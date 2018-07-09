@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity">
+    tools:context=".HomeActivity"
+    android:background="@drawable/bg5">
 
     <Button
         android:id="@+id/home_ocr"
@@ -66,21 +67,6 @@
         app:layout_constraintTop_toBottomOf="@+id/home_logo"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/rpiButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="RPI CAM"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_camera"
-        app:layout_constraintVertical_bias="0.124" />
-
     <TextView
         android:id="@+id/speechtext"
         android:layout_width="288dp"
@@ -122,7 +108,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:textColor="#FFFF00"
+        android:textColorHint="#FFFF00"
+        />
 
     <EditText
         android:id="@+id/port"
@@ -141,28 +130,19 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/IpAddress"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.868" />
+        app:layout_constraintVertical_bias="0.868"
+        android:textColor="#FFFF00"
+        android:textColorHint="#FFFF00"
+        />
 
     <Button
         android:id="@+id/connectbutton"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="16dp"
-        android:text="Connect"
+        android:layout_marginStart="148dp"
+        android:text="SAVE"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/IpAddress" />
 
-    <Button
-        android:id="@+id/disconnectButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Disconnect"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.817"
-        app:layout_constraintStart_toEndOf="@+id/connectbutton"
-        app:layout_constraintTop_toBottomOf="@+id/port" />
 </android.support.constraint.ConstraintLayout>

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LogoActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/bg6">
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
@@ -54,15 +55,21 @@
         android:id="@+id/logoresponsetext"
         android:layout_width="272dp"
         android:layout_height="50dp"
-        android:layout_below="@id/logoview"
-        android:layout_marginLeft="24dp"
-        android:layout_toRightOf="@+id/animalButton"
+        android:layout_alignBaseline="@+id/downloadImage"
+        android:layout_alignBottom="@+id/downloadImage"
+        android:layout_marginStart="47dp"
+        android:layout_toEndOf="@+id/logoview"
         android:inputType="textMultiLine"
-        android:scrollHorizontally="false" />
+        android:scrollHorizontally="false"
+        android:visibility="visible" />
 
-
-
-
+    <Button
+        android:id="@+id/button_speak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/logo_logo"
+        android:layout_below="@+id/logo_logo"
+        android:text="Say it!" />
 
 
 </RelativeLayout>

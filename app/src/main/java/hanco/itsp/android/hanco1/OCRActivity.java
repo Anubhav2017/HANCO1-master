@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
@@ -22,6 +23,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.UnknownHostException;
 import java.util.Locale;
 
 import static hanco.itsp.android.hanco1.HomeActivity.IPAddress;
@@ -40,6 +42,7 @@ public class OCRActivity extends AppCompatActivity {
     Button buttonSpeak;
     Uri outputFileDir;
     private TextToSpeech mTTS;
+    private Button mButtonSpeak;
 
     public String result;
 
@@ -49,7 +52,27 @@ public class OCRActivity extends AppCompatActivity {
     private static final String DATA_PATH = Environment.getExternalStorageDirectory() + "/Tess";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener()
+        {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = mTTS.setLanguage(new Locale("en", "IN"));
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA
+                            || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "Language not supported");
+                    } else {
+                        mButtonSpeak.setEnabled(true);
+                    }
+                } else {
+                    Log.e("TTS", "Initialization failed");
+                }
+            }
+        });
         setContentView(R.layout.activity_ocr);
         imageView=findViewById(R.id.ocrImageView);
         textView=findViewById(R.id.ocrText);
@@ -58,12 +81,12 @@ public class OCRActivity extends AppCompatActivity {
         ocrDownloadButton=findViewById(R.id.ocrdownload);
         ocrButton=findViewById(R.id.startOCR);
         cropButton=findViewById(R.id.cropButton);
-        buttonSpeak = findViewById(R.id.TTS);
         cropButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MyClientTask ocrTask=new MyClientTask(IPAddress,Integer.parseInt(Port),"OCR");
                 ocrTask.execute();
+
             }
         });
         ocrUploadButton.setOnClickListener(new View.OnClickListener() {
@@ -92,39 +115,37 @@ public class OCRActivity extends AppCompatActivity {
             }
         });
 
-        mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
+        mButtonSpeak = findViewById(R.id.button_speak2);
 
-                if (status == TextToSpeech.SUCCESS) {
-                    int result = mTTS.setLanguage(new Locale("en", "IN"));
 
-                    if (result == TextToSpeech.LANG_MISSING_DATA
-                            || result == TextToSpeech.LANG_NOT_SUPPORTED)
-                    {Log.e("TTS", "Unsupported Language ;(");
-                } else {
-                    buttonSpeak.setEnabled(true);
-                }
-            } else {
-                    Log.e("TTS", "Initialization failed :'(");
-                }
-            }
-        });
-
-        buttonSpeak.setOnClickListener(new View.OnClickListener() {
+        mButtonSpeak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                speak();
+
+                TextView myword = findViewById(R.id.ocrText);
+                String words = myword.getText().toString();
+                speakWords(words);
+
             }
         });
-
+    }
+    private void speakWords(String speech) {
+        if(speech.equals(""))
+        {
+            speech = "Nothing to say yet";
+        }
+        mTTS.speak(speech, TextToSpeech.QUEUE_FLUSH, null);
     }
 
-    private void speak() {
-        if(!result.isEmpty())
-            textView.setText("OCR Empty :'(");
-        else
-            mTTS.speak(result, TextToSpeech.QUEUE_FLUSH, null, "utteranceID: 1");
+
+    @Override
+    protected void onDestroy() {
+        if (mTTS != null) {
+            mTTS.stop();
+            mTTS.shutdown();
+        }
+
+        super.onDestroy();
     }
 
     private void prepareTessData() {
@@ -230,12 +251,4 @@ public class OCRActivity extends AppCompatActivity {
         return retStr;
     }
 
-    protected void onDestroy() {
-        if (mTTS != null) {
-            mTTS.stop();
-            mTTS.shutdown();
-        }
-
-        super.onDestroy();
-    }
 }

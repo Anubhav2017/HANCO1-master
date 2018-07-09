@@ -63,7 +63,6 @@ public class HomeActivity extends AppCompatActivity {
         speechText=findViewById(R.id.speechtext);
         Button speakButton=findViewById(R.id.speakButton);
         connect=findViewById(R.id.connectbutton);
-        disconnect=findViewById(R.id.disconnectButton);
         portfield=findViewById(R.id.port);
         ipfield=findViewById(R.id.IpAddress);
         connect.setOnClickListener(new View.OnClickListener() {

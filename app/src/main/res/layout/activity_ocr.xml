@@ -4,12 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OCRActivity">
+    tools:context=".OCRActivity"
+    android:background="@drawable/bg6">
 
     <ImageView
         android:id="@+id/ocrImageView"
         android:layout_width="200dp"
         android:layout_height="200dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         tools:layout_editor_absoluteX="-10dp"
         tools:layout_editor_absoluteY="-25dp" />
 
@@ -17,9 +20,8 @@
         android:id="@+id/ocrText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="TextView"
         android:layout_below="@id/ocrImageView"
-        android:visibility="visible"/>
+        android:visibility="visible" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,10 +51,11 @@
         android:layout_below="@id/ocrdownload"/>
 
     <Button
-        android:id="@+id/TTS"
+        android:id="@+id/button_speak2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/cropButton"
-        android:text="TTS" />
+        android:layout_alignBaseline="@+id/ocrdownload"
+        android:layout_alignBottom="@+id/ocrdownload"
+        android:layout_toEndOf="@+id/cropButton"
+        android:text="Say It!" />
 </RelativeLayout>

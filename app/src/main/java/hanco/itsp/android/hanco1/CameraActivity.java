@@ -3,12 +3,15 @@ package hanco.itsp.android.hanco1;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
+import android.media.ImageReader;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
@@ -39,6 +42,7 @@ public class CameraActivity extends AppCompatActivity {
     Size rearsize = HomeActivity.rearsize;
     CameraDevice currentCamera;
     Boolean toggled = false;
+    int width,height;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
     static {
@@ -164,6 +168,37 @@ public class CameraActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+                }
+            }
+        });
+        picbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SurfaceTexture surfaceTexture=previewtexture.getSurfaceTexture();
+                final Surface surface=new Surface(surfaceTexture);
+                ImageReader reader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1);
+                try {
+                    currentCamera.createCaptureSession(Collections.singletonList(surface), new CameraCaptureSession.StateCallback() {
+                        @Override
+                        public void onConfigured(@NonNull CameraCaptureSession session) {
+                            try {
+                                CaptureRequest.Builder clickBuilder=currentCamera.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+                                clickBuilder.addTarget(surface);
+                                session.capture(clickBuilder.build(),null,handler);
+
+                            } catch (CameraAccessException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                        @Override
+                        public void onConfigureFailed(@NonNull CameraCaptureSession session) {
+
+                        }
+                    },handler);
+                } catch (CameraAccessException e) {
+                    e.printStackTrace();
                 }
             }
         });
