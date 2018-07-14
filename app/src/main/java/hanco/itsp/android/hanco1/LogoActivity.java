@@ -104,7 +104,9 @@ public class LogoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DjangoUnchained abc=new DjangoUnchained (getApplicationContext(),"Logo");
-                abc.execute("http://192.168.2.11:8090/static/images/input.jpg");
+                String url="http://"+IPAddress+":8090/static/images/input.jpg";
+
+                abc.execute(url);
             }
         });
 
